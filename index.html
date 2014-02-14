@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+<head>
+
+<style>
+
+	.vertically-centered,
+	.aspect-ratio {
+		font-size:0;
+		position:relative;
+		display:block;
+		text-align:center;
+	}
+
+	.vertically-centered:before,
+	.aspect-ratio:before {
+		content:"";
+		width:0;
+		display:inline-block;
+		vertical-align:middle;
+	}
+
+	.vertically-centered:before {
+		height:100%;
+	}
+
+	.aspect-ratio:before {
+		height:0;
+		/* defaults to 4/3 */
+		padding-top:75%;
+	}
+	
+	.aspect-ratio--golden:before {
+		padding-top:61.8%;
+	}
+
+    .aspect-ratio--widescreen:before {
+        /* ratio 16:9 */
+        padding-top: 56.25%;
+    }
+
+    .aspect-ratio--square:before {
+        /* ratio 1:1 */
+        padding-top: 100%;
+    }
+	
+	.vertically-centered__content,
+	.aspect-ratio__content {
+		position:relative;
+		z-index:2;
+		display:inline-block;
+
+		/* because the content is being centered horizontally, it is easier to use width rather than padding and margins for spacing. maybe */
+		width:90%;
+
+		/* undo the settings on the parent (if necessary) */
+		text-align:left;
+		font-size:10px;
+		font-size:1rem;
+		padding:15px 0;
+	}
+
+	.vertically-centered__content {
+		vertical-align:middle;
+	}
+
+	.aspect-ratio__content {
+		vertical-align:top;
+	}
+	
+	.vertically-centered--underlay:after,
+	.aspect-ratio--underlay:after {
+		content:"";
+		position:absolute;
+		width:100%;
+		height:100%;
+		top:0;
+		left:0;
+		background:rgba(0,0,0,0.3);
+	}	
+	
+	.vertically-centered--hover:after,
+	.aspect-ratio--hover:after {
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
+
+		-moz-transition:all 0.5s;
+		-webkit-transition:all 0.5s;
+		-ms-transition:all 0.5s;
+		transition:all 0.5s;
+
+		border: 0 solid #9A806B;
+	}	
+	
+	.vertically-centered--hover:hover,
+	.aspect-ratio--hover:hover {
+		/* an empty hover is needed for all version of IE to make :hover:after work */
+		/* the zoom is needed for IE 8 */
+		zoom:1;
+	}
+	
+	.vertically-centered--hover:hover:after,
+	.aspect-ratio--hover:hover:after {
+		background: rgba(0, 0, 0, 0.8);
+		border: 10px solid #9A806B;
+	}
+
+	.vertically-centered__cover,
+	.aspect-ratio__cover {
+		/* cover is will be under content if both present */
+		position:absolute;
+		z-index:1;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
+
+	
+	p {
+		font-size:30px;
+		font-size:3rem;
+		color:white;
+		text-align:center;
+		margin:0;
+		padding:0;
+	}
+	
+	/* non specific */
+
+	html {
+		font-size:62.5%;
+	}
+	
+	body {
+		padding-bottom:400px;
+	}
+	
+	.horizontal-half {
+		width:50%;
+	}
+
+	.some-sized-panel {
+		height:300px;
+		background:#f00;
+		width:48%;
+		display:inline-block;
+	}
+	
+	.some-sized-panel:nth-child(even) {
+		background:#0fa;
+	}
+	
+	hr {
+		margin:20px 0;
+	}
+	
+</style>
+
+<!--[if lte IE 8]>
+    <style>
+		.vertically-centered--underlay:after,
+		.aspect-ratio--underlay:after {
+			background:url('lightbg.png');
+		}
+
+		.vertically-centered--hover:hover:after,
+		.aspect-ratio--hover:hover:after {
+			background:url('darkbg.png');
+		}
+		
+	</style>
+<!--<![endif]-->
+
+	<script>
+	
+		function addContent() {
+		
+			// very specific function for adding content
+			var el = Array.prototype.slice.call(document.getElementsByClassName("vertically-centered__content"),0).pop();
+			
+			el.innerHTML += '<p>More content!</p>';
+		
+		}
+	
+	</script>
+
+</head>
+
+<body>
+
+	<div class="vertically-centered some-sized-panel">
+		<div class="vertically-centered__content">
+			<p>Vertical text</p>
+			<p>Arbitrary fixed height</p>
+			<p>Can be problem if content is bigger than height</p>
+			<p>I think every vertical centering has this problem. Maybe not the table-cell one, but it has issues of it's own</p>
+		</div>
+	</div>
+
+	<div class="vertically-centered some-sized-panel">
+		<div class="vertically-centered__content">
+			<p><-- I'm with stupid</p>
+		</div>
+	</div>
+	
+<hr style="clear:both;overflow:hidden;"/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen" style="background: url('http://lorempixel.com/900/500/food/1/');background-size:cover;"></div>
+
+<hr/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen" style="background: url('http://lorempixel.com/900/500/food/2/');background-size:cover;">
+	<div class="vertically-centered__content">
+		<p>line of centered content</p>
+		<p>can't read it properly</p>
+	</div>
+</div>
+
+<hr/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen aspect-ratio--underlay" style="background: url('http://lorempixel.com/900/500/food/3/');background-size:cover;">
+	<div class="vertically-centered__content">
+		<p>line of centered content</p>
+		<p>Using widescreen ratio</p>
+		<p>Add underlay to help read it a bit better?</p>
+	</div>
+</div>
+
+<hr/>
+
+<button onclick="addContent();">Add more content</button>
+
+<a href="#biscuits" class="horizontal-half aspect-ratio aspect-ratio--golden aspect-ratio--underlay aspect-ratio--hover" style="background: url('http://lorempixel.com/900/500/food/4/');background-size:cover;">
+		<div class="vertically-centered__content">
+			<p>line of centered content. I am a bit larger so I should go over two lines</p>
+			<p>Has underlay and hover effects with golden ratio</p>
+		</div>
+</a>
+
+</body>
