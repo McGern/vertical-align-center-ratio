@@ -1,79 +1,242 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+<head>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Vertical-align-center-ratio : Vertically aligned text within ratioed container" />
+<style>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+	.vertically-centered,
+	.aspect-ratio {
+		font-size:0;
+		position:relative;
+		display:block;
+		text-align:center;
+	}
 
-    <title>Vertical-align-center-ratio</title>
-  </head>
+	.vertically-centered:before,
+	.aspect-ratio:before {
+		content:"";
+		width:0;
+		display:inline-block;
+		vertical-align:middle;
+	}
 
-  <body>
+	.vertically-centered:before {
+		height:100%;
+	}
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/McGern/vertical-align-center-ratio">View on GitHub</a>
+	.aspect-ratio:before {
+		height:0;
+		/* defaults to 4/3 */
+		padding-top:75%;
+	}
+	
+	.aspect-ratio--golden:before {
+		padding-top:61.8%;
+	}
 
-          <h1 id="project_title">Vertical-align-center-ratio</h1>
-          <h2 id="project_tagline">Vertically aligned text within ratioed container</h2>
+    .aspect-ratio--widescreen:before {
+        /* ratio 16:9 */
+        padding-top: 56.25%;
+    }
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/McGern/vertical-align-center-ratio/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/McGern/vertical-align-center-ratio/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+    .aspect-ratio--square:before {
+        /* ratio 1:1 */
+        padding-top: 100%;
+    }
+	
+	.vertically-centered__content,
+	.aspect-ratio__content {
+		position:relative;
+		z-index:2;
+		display:inline-block;
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+		/* because the content is being centered horizontally, it is easier to use width rather than padding and margins for spacing. maybe */
+		width:90%;
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+		/* undo the settings on the parent (if necessary) */
+		text-align:left;
+		font-size:10px;
+		font-size:1rem;
+		padding:15px 0;
+	}
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+	.vertically-centered__content {
+		vertical-align:middle;
+	}
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+	.aspect-ratio__content {
+		vertical-align:top;
+	}
+	
+	.vertically-centered--underlay:after,
+	.aspect-ratio--underlay:after {
+		content:"";
+		position:absolute;
+		width:100%;
+		height:100%;
+		top:0;
+		left:0;
+		background:rgba(0,0,0,0.3);
+	}	
+	
+	.vertically-centered--hover:after,
+	.aspect-ratio--hover:after {
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+		-moz-transition:all 0.5s;
+		-webkit-transition:all 0.5s;
+		-ms-transition:all 0.5s;
+		transition:all 0.5s;
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+		border: 0 solid #9A806B;
+	}	
+	
+	.vertically-centered--hover:hover,
+	.aspect-ratio--hover:hover {
+		/* an empty hover is needed for all version of IE to make :hover:after work */
+		/* the zoom is needed for IE 8 */
+		zoom:1;
+	}
+	
+	.vertically-centered--hover:hover:after,
+	.aspect-ratio--hover:hover:after {
+		background: rgba(0, 0, 0, 0.8);
+		border: 10px solid #9A806B;
+	}
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+	.vertically-centered__cover,
+	.aspect-ratio__cover {
+		/* cover is will be under content if both present */
+		position:absolute;
+		z-index:1;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+	
+	p {
+		font-size:30px;
+		font-size:3rem;
+		color:white;
+		text-align:center;
+		margin:0;
+		padding:0;
+	}
+	
+	/* non specific */
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+	html {
+		font-size:62.5%;
+	}
+	
+	body {
+		padding-bottom:400px;
+	}
+	
+	.horizontal-half {
+		width:50%;
+	}
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+	.some-sized-panel {
+		height:300px;
+		background:#f00;
+		width:48%;
+		display:inline-block;
+	}
+	
+	.some-sized-panel:nth-child(even) {
+		background:#0fa;
+	}
+	
+	hr {
+		margin:20px 0;
+	}
+	
+</style>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<!--[if lte IE 8]>
+    <style>
+		.vertically-centered--underlay:after,
+		.aspect-ratio--underlay:after {
+			background:url('lightbg.png');
+		}
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
+		.vertically-centered--hover:hover:after,
+		.aspect-ratio--hover:hover:after {
+			background:url('darkbg.png');
+		}
+		
+	</style>
+<!--<![endif]-->
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Vertical-align-center-ratio maintained by <a href="https://github.com/McGern">McGern</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+	<script>
+	
+		function addContent() {
+		
+			// very specific function for adding content
+			var el = Array.prototype.slice.call(document.getElementsByClassName("vertically-centered__content"),0).pop();
+			
+			el.innerHTML += '<p>More content!</p>';
+		
+		}
+	
+	</script>
 
-    
+</head>
 
-  </body>
-</html>
+<body>
+
+	<div class="vertically-centered some-sized-panel">
+		<div class="vertically-centered__content">
+			<p>Vertical text</p>
+			<p>Arbitrary fixed height</p>
+			<p>Can be problem if content is bigger than height</p>
+			<p>I think every vertical centering has this problem. Maybe not the table-cell one, but it has issues of it's own</p>
+		</div>
+	</div>
+
+	<div class="vertically-centered some-sized-panel">
+		<div class="vertically-centered__content">
+			<p><-- I'm with stupid</p>
+		</div>
+	</div>
+	
+<hr style="clear:both;overflow:hidden;"/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen" style="background: url('http://lorempixel.com/900/500/food/1/');background-size:cover;"></div>
+
+<hr/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen" style="background: url('http://lorempixel.com/900/500/food/2/');background-size:cover;">
+	<div class="vertically-centered__content">
+		<p>line of centered content</p>
+		<p>can't read it properly</p>
+	</div>
+</div>
+
+<hr/>
+
+<div class="horizontal-half aspect-ratio aspect-ratio--widescreen aspect-ratio--underlay" style="background: url('http://lorempixel.com/900/500/food/3/');background-size:cover;">
+	<div class="vertically-centered__content">
+		<p>line of centered content</p>
+		<p>Using widescreen ratio</p>
+		<p>Add underlay to help read it a bit better?</p>
+	</div>
+</div>
+
+<hr/>
+
+<button onclick="addContent();">Add more content</button>
+
+<a href="#biscuits" class="horizontal-half aspect-ratio aspect-ratio--golden aspect-ratio--underlay aspect-ratio--hover" style="background: url('http://lorempixel.com/900/500/food/4/');background-size:cover;">
+		<div class="vertically-centered__content">
+			<p>line of centered content. I am a bit larger so I should go over two lines</p>
+			<p>Has underlay and hover effects with golden ratio</p>
+		</div>
+</a>
+
+</body>
